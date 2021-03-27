@@ -1,4 +1,4 @@
-defmodule EQRCode.GaloisField do
+defmodule QRCodeEx.GaloisField do
   @moduledoc false
 
   import Bitwise
@@ -7,7 +7,7 @@ defmodule EQRCode.GaloisField do
   Given alpha exponent returns integer.
 
   Example:
-      iex> EQRCode.GaloisField.to_i(1)
+      iex> QRCodeEx.GaloisField.to_i(1)
       2
   """
   @spec to_i(integer) :: integer
@@ -17,7 +17,7 @@ defmodule EQRCode.GaloisField do
   Given integer returns alpha exponent.
 
   Example:
-      iex> EQRCode.GaloisField.to_a(2)
+      iex> QRCodeEx.GaloisField.to_a(2)
       1
   """
   @spec to_a(integer) :: integer

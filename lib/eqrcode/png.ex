@@ -1,11 +1,11 @@
-defmodule EQRCode.PNG do
+defmodule QRCodeEx.PNG do
   @moduledoc """
   Render the QR Code matrix in PNG format
 
   ```elixir
   qr_code_content
-  |> EQRCode.encode()
-  |> EQRCode.png()
+  |> QRCodeEx.encode()
+  |> QRCodeEx.png()
   ```
 
   You can specify the following attributes of the QR code:
@@ -17,7 +17,7 @@ defmodule EQRCode.PNG do
   By default, QR code size will be dynamically generated based on the input string.
   """
 
-  alias EQRCode.Matrix
+  alias QRCodeEx.Matrix
 
   @defaults %{
     background_color: <<255, 255, 255>>,

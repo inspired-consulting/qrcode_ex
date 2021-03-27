@@ -1,15 +1,15 @@
-defmodule EQRCode.MixProject do
+defmodule QRCodeEx.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :eqrcode,
-      version: "0.1.7",
+      app: :qrcode_ex,
+      version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
-      name: "EQRCode",
+      name: "QRCodeEx",
       description: "Simple QRCode Generator in Elixir",
-      source_url: "https://github.com/SiliconJungles/eqrcode",
+      source_url: "https://github.com/inspired-consulting/qrcode_ex",
       package: package(),
       deps: deps(),
       docs: docs()
@@ -26,8 +26,8 @@ defmodule EQRCode.MixProject do
   defp package() do
     [
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/SiliconJungles/eqrcode"},
-      maintainers: ["siliconavengers"]
+      links: %{"GitHub" => "https://github.com/inspired-consulting/qrcode_ex"},
+      maintainers: ["inspired-consulting"]
     ]
   end
 
@@ -43,7 +43,7 @@ defmodule EQRCode.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.19", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
     ]
   end
 end

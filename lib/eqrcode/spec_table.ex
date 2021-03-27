@@ -1,4 +1,4 @@
-defmodule EQRCode.SpecTable do
+defmodule QRCodeEx.SpecTable do
   @type error_correction_level :: :l | :m | :q | :h
   @type version :: 1..40
   @type mode :: :numeric | :alphanumeric | :byte | :kenji | :eci

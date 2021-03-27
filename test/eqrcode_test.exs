@@ -1,6 +1,6 @@
-defmodule EQRCodeTest do
+defmodule QRCodeExTest do
   use ExUnit.Case
-  doctest EQRCode.Encode
+  doctest QRCodeEx.Encode
 
   describe "encoder" do
     @sample_matrix {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -32,7 +32,7 @@ defmodule EQRCodeTest do
     test "should return the sample matrix when call the method" do
       qr_code_matrix =
         "silicon jungles"
-        |> EQRCode.encode()
+        |> QRCodeEx.encode()
 
       assert qr_code_matrix.matrix == @sample_matrix
     end
@@ -41,7 +41,7 @@ defmodule EQRCodeTest do
       long_qr_content = String.duplicate("a", 2954)
 
       assert_raise ArgumentError, "your input is too long. keep it under 2952 characters", fn ->
-        long_qr_content |> EQRCode.encode()
+        long_qr_content |> QRCodeEx.encode()
       end
     end
   end

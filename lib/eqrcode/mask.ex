@@ -1,10 +1,10 @@
-defmodule EQRCode.Mask do
+defmodule QRCodeEx.Mask do
   @moduledoc false
 
   @doc """
   Get the total score for the masked matrix.
   """
-  @spec score(EQRCode.Matrix.matrix()) :: integer
+  @spec score(QRCodeEx.Matrix.matrix()) :: integer
   def score(matrix) do
     rule1(matrix) + rule2(matrix) + rule3(matrix) + rule4(matrix)
   end
@@ -12,7 +12,7 @@ defmodule EQRCode.Mask do
   @doc """
   Check for consecutive blocks.
   """
-  @spec rule1(EQRCode.Matrix.matrix()) :: integer
+  @spec rule1(QRCodeEx.Matrix.matrix()) :: integer
   def rule1(matrix) do
     matrix = for e <- Tuple.to_list(matrix), do: Tuple.to_list(e)
 
@@ -34,13 +34,13 @@ defmodule EQRCode.Mask do
   @doc """
   Check for 2x2 blocks.
   """
-  @spec rule2(EQRCode.Matrix.matrix()) :: integer
+  @spec rule2(QRCodeEx.Matrix.matrix()) :: integer
   def rule2(matrix) do
     z = tuple_size(matrix) - 2
 
     for i <- 0..z,
         j <- 0..z do
-      EQRCode.Matrix.shape({i, j}, {2, 2})
+      QRCodeEx.Matrix.shape({i, j}, {2, 2})
       |> Enum.map(&get(matrix, &1))
     end
     |> Enum.reduce(0, &do_rule2/2)
@@ -53,7 +53,7 @@ defmodule EQRCode.Mask do
   @doc """
   Check for special blocks.
   """
-  @spec rule3(EQRCode.Matrix.matrix()) :: integer
+  @spec rule3(QRCodeEx.Matrix.matrix()) :: integer
   def rule3(matrix) do
     z = tuple_size(matrix)
 
@@ -61,7 +61,7 @@ defmodule EQRCode.Mask do
         j <- 0..(z - 11) do
       [{{i, j}, {11, 1}}, {{j, i}, {1, 11}}]
       |> Stream.map(fn {a, b} ->
-        EQRCode.Matrix.shape(a, b)
+        QRCodeEx.Matrix.shape(a, b)
         |> Enum.map(&get(matrix, &1))
       end)
       |> Enum.map(&do_rule3/1)
@@ -77,7 +77,7 @@ defmodule EQRCode.Mask do
   @doc """
   Check for module's proportion.
   """
-  @spec rule4(EQRCode.Matrix.matrix()) :: integer
+  @spec rule4(QRCodeEx.Matrix.matrix()) :: integer
   def rule4(matrix) do
     m = tuple_size(matrix)
 
@@ -101,7 +101,7 @@ defmodule EQRCode.Mask do
   @doc """
   The mask algorithm.
   """
-  @spec mask(integer, EQRCode.Matrix.coordinate()) :: 0 | 1
+  @spec mask(integer, QRCodeEx.Matrix.coordinate()) :: 0 | 1
   def mask(0b000, {x, y}) when rem(x + y, 2) == 0, do: 1
   def mask(0b000, {_, _}), do: 0
   def mask(0b001, {x, _}) when rem(x, 2) == 0, do: 1

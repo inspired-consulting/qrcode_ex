@@ -1,4 +1,4 @@
-defmodule EQRCode.SVGTest do
+defmodule QRCodeEx.SVGTest do
   use ExUnit.Case
 
   defp content, do: "www.google.com"
@@ -6,7 +6,7 @@ defmodule EQRCode.SVGTest do
 
   setup do
     html_path() |> File.mkdir_p!()
-    qr = content() |> EQRCode.encode()
+    qr = content() |> QRCodeEx.encode()
     [qr: qr]
   end
 
@@ -43,8 +43,8 @@ defmodule EQRCode.SVGTest do
   end
 
   defp build_svgs(svgs, qr, label, opts) do
-    svg = EQRCode.svg(qr, opts)
-    svg_c = EQRCode.svg(qr, [shape: "circle"] ++ opts)
+    svg = QRCodeEx.svg(qr, opts)
+    svg_c = QRCodeEx.svg(qr, [shape: "circle"] ++ opts)
     svgs ++ [{label, svg <> svg_c}]
   end
 
@@ -56,7 +56,7 @@ defmodule EQRCode.SVGTest do
     <html xmlns="http://www.w3.org/1999/xhtml">
     <body>
         <head>
-            <title>EQRCode PNG Image Tests</title>
+            <title>QRCodeEx PNG Image Tests</title>
             <style>
             body { background: rgba(0,255,0); }
             </style>

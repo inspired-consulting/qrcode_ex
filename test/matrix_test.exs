@@ -1,4 +1,4 @@
-defmodule EQRCode.MatrixTest do
+defmodule QRCodeEx.MatrixTest do
   use ExUnit.Case
-  doctest EQRCode.Matrix
+  doctest QRCodeEx.Matrix
 end

@@ -1,4 +1,4 @@
-defmodule EQRCode.GaloisFieldTest do
+defmodule QRCodeEx.GaloisFieldTest do
   use ExUnit.Case
-  doctest EQRCode.GaloisField
+  doctest QRCodeEx.GaloisField
 end

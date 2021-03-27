@@ -1,8 +1,8 @@
-defmodule EQRCode.ReedSolomon do
+defmodule QRCodeEx.ReedSolomon do
   @moduledoc false
 
   import Bitwise
-  alias EQRCode.SpecTable
+  alias QRCodeEx.SpecTable
 
   @format_generator_polynomial 0b10100110111
   @format_mask 0b101010000010010
@@ -11,7 +11,7 @@ defmodule EQRCode.ReedSolomon do
   Returns generator polynomials in alpha exponent for given error code length.
 
   Example:
-      iex> EQRCode.ReedSolomon.generator_polynomial(10)
+      iex> QRCodeEx.ReedSolomon.generator_polynomial(10)
       [0, 251, 67, 46, 61, 118, 70, 64, 94, 32, 45]
   """
   def generator_polynomial(error_code_len)
@@ -24,8 +24,8 @@ defmodule EQRCode.ReedSolomon do
     rest =
       Stream.zip(rest, tl(e))
       |> Enum.map(fn {x, y} ->
-        (EQRCode.GaloisField.to_i(x) ^^^ EQRCode.GaloisField.to_i(y))
-        |> EQRCode.GaloisField.to_a()
+        (QRCodeEx.GaloisField.to_i(x) ^^^ QRCodeEx.GaloisField.to_i(y))
+        |> QRCodeEx.GaloisField.to_a()
       end)
 
     {[0] ++ rest ++ last, i + 1}
@@ -39,7 +39,7 @@ defmodule EQRCode.ReedSolomon do
   Reed-Solomon encode.
 
   Example:
-      iex> EQRCode.ReedSolomon.encode(EQRCode.Encode.encode("hello world!", :l))
+      iex> QRCodeEx.ReedSolomon.encode(QRCodeEx.Encode.encode("hello world!", :l))
       {1, :l, <<64, 198, 134, 86, 198, 198, 242, 7, 118, 247, 38, 198, 66, 16,
         236, 17, 236, 17, 236, 45, 99, 25, 84, 35, 114, 46>>}
   """
@@ -111,10 +111,10 @@ defmodule EQRCode.ReedSolomon do
 
   @doc """
   ## Example
-  iex> EQRCode.ReedSolomon.interleave_sec([[1, 2], [6, 7], [3, 4, 5], [8, 9, 10]], []) |> Enum.reverse()
+  iex> QRCodeEx.ReedSolomon.interleave_sec([[1, 2], [6, 7], [3, 4, 5], [8, 9, 10]], []) |> Enum.reverse()
   [1, 6, 3, 8, 2, 7, 4, 9, 5, 10]
 
-  iex> EQRCode.ReedSolomon.interleave_sec([[]], [])
+  iex> QRCodeEx.ReedSolomon.interleave_sec([[]], [])
   []
   """
   def interleave_sec([], acc), do: acc
@@ -131,7 +131,7 @@ defmodule EQRCode.ReedSolomon do
   Perform the polynomial division.
 
   Example:
-      iex> EQRCode.ReedSolomon.polynomial_division([64, 198, 134, 86, 198, 198, 242, 7, 118, 247, 38, 198, 66, 16, 236, 17, 236, 17, 236], [0, 87, 229, 146, 149, 238, 102, 21], 19)
+      iex> QRCodeEx.ReedSolomon.polynomial_division([64, 198, 134, 86, 198, 198, 242, 7, 118, 247, 38, 198, 66, 16, 236, 17, 236, 17, 236], [0, 87, 229, 146, 149, 238, 102, 21], 19)
       [45, 99, 25, 84, 35, 114, 46]
   """
   @spec polynomial_division(list, list, integer) :: list
@@ -144,8 +144,8 @@ defmodule EQRCode.ReedSolomon do
   defp do_polynomial_division([], _), do: []
 
   defp do_polynomial_division([h | _] = msg, gen_poly) do
-    Enum.map(gen_poly, &rem(&1 + EQRCode.GaloisField.to_a(h), 255))
-    |> Enum.map(&EQRCode.GaloisField.to_i/1)
+    Enum.map(gen_poly, &rem(&1 + QRCodeEx.GaloisField.to_a(h), 255))
+    |> Enum.map(&QRCodeEx.GaloisField.to_i/1)
     |> pad_zip(msg)
     |> Enum.map(fn {a, b} -> a ^^^ b end)
     |> tl()
@@ -170,10 +170,10 @@ defmodule EQRCode.ReedSolomon do
   end
 
   def bch_encode(data) do
-    bch = do_bch_encode(EQRCode.Encode.bits(<<data::bits, 0::10>>))
+    bch = do_bch_encode(QRCodeEx.Encode.bits(<<data::bits, 0::10>>))
 
-    (EQRCode.Encode.bits(data) ++ bch)
-    |> Stream.zip(EQRCode.Encode.bits(<<@format_mask::15>>))
+    (QRCodeEx.Encode.bits(data) ++ bch)
+    |> Stream.zip(QRCodeEx.Encode.bits(<<@format_mask::15>>))
     |> Enum.map(fn {a, b} -> a ^^^ b end)
   end
 
@@ -181,7 +181,7 @@ defmodule EQRCode.ReedSolomon do
   defp do_bch_encode([0 | t]), do: do_bch_encode(t)
 
   defp do_bch_encode(list) do
-    EQRCode.Encode.bits(<<@format_generator_polynomial::11>>)
+    QRCodeEx.Encode.bits(<<@format_generator_polynomial::11>>)
     |> Stream.concat(Stream.cycle([0]))
     |> Stream.zip(list)
     |> Enum.map(fn {a, b} -> a ^^^ b end)

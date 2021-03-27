@@ -1,4 +1,4 @@
-defmodule EQRCode.ReedSolomonTest do
+defmodule QRCodeEx.ReedSolomonTest do
   use ExUnit.Case
-  doctest EQRCode.ReedSolomon
+  doctest QRCodeEx.ReedSolomon
 end

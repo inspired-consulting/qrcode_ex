@@ -1,33 +1,38 @@
-# EQRCode
+# QRCodeEx
 
 Simple QR Code Generator written in Elixir with no other dependencies.
 
+This project is a fork an a successor of [SiliconJungles/eqrcode](https://github.com/SiliconJungles/eqrcode). It adds the following functionallity:
+* more error coreection levels: :m, :q, :h (before was only :l)
+* more QR code versions: 8..40  (before was only 1-7)
+
+We tried to keep the project api compatible with [SiliconJungles/eqrcode](https://github.com/SiliconJungles/eqrcode).
 ## Installation
 
 ```elixir
 def deps do
   [
-    {:eqrcode, "~> 0.1.7"}
+    {:qrcode_ex, "~> 0.1.0"}
   ]
 end
 ```
 
-## Using EQRCode (Basic Usage)
+## Using QRCodeEx (Basic Usage)
 
-You can use EQRCode to generate QR Code in SVG or PNG format.
+You can use QRCodeEx to generate QR Code in SVG or PNG format.
 
 ```elixir
 qr_code_content = "your_qr_code_content"
 
 # To SVG
 qr_code_content
-|> EQRCode.encode()
-|> EQRCode.svg()
+|> QRCodeEx.encode()
+|> QRCodeEx.svg()
 
 # To PNG
 qr_code_content
-|> EQRCode.encode()
-|> EQRCode.png()
+|> QRCodeEx.encode()
+|> QRCodeEx.png()
 ```
 <img src="./screenshots/default.png" width="300">
 
@@ -36,8 +41,8 @@ Note that the PNG format is only the binary. You still have to write the data to
 ```elixir
 qr_code_png =
   qr_code_content
-  |> EQRCode.encode()
-  |> EQRCode.png()
+  |> QRCodeEx.encode()
+  |> QRCodeEx.png()
 
 File.write("path/where/you/want/to/save.png", qr_code_png, [:binary])
 ```
@@ -48,12 +53,12 @@ You should be able to see the file generated in the path you specified.
 
 ### SVG
 
-You can pass in options into `EQRCode.svg()`:
+You can pass in options into `QRCodeEx.svg()`:
 
 ```elixir
 qr_code_content
-|> EQRCode.encode()
-|> EQRCode.svg(color: "#03B6AD", shape: "circle", width: 300, background_color: "#FFF")
+|> QRCodeEx.encode()
+|> QRCodeEx.svg(color: "#03B6AD", shape: "circle", width: 300, background_color: "#FFF")
 ```
 
 <img src="./screenshots/circle-color.png" width="300">
@@ -84,14 +89,16 @@ You can also render the QRCode in your console:
 
 ```elixir
 qr_code_content
-|> EQRCode.encode()
-|> EQRCode.render()
+|> QRCodeEx.encode()
+|> QRCodeEx.render()
 ```
 
 ## Credits
 
-We reused most of the code from [sunboshan/qrcode](https://github.com/sunboshan/qrcode) to generate the matrix required to render the QR Code. We also reference [rqrcode](https://github.com/whomwah/rqrcode) on how to generate SVG from the QR Code matrix.
+* We reused most of the code from [SiliconJungles/eqrcode](https://github.com/SiliconJungles/eqrcode) to generate QR Codes up to version 7 and an error correction level of l.
+
+* [SiliconJungles/eqrcode](https://github.com/SiliconJungles/eqrcode) reused most of the code from [sunboshan/qrcode](https://github.com/sunboshan/qrcode) to generate the matrix required to render the QR Code. We also reference [rqrcode](https://github.com/whomwah/rqrcode) on how to generate SVG from the QR Code matrix.
 
 ## License
 
-This project is Licensed under the [MIT License](https://github.com/SiliconJungles/eqrcode/blob/master/LICENSE).
+This project is Licensed under the [MIT License](https://github.com/inspired-consulting/qrcode_ex/blob/main/LICENSE).

@@ -1,4 +1,4 @@
-defmodule EQRCode.PNGTest do
+defmodule QRCodeEx.PNGTest do
   use ExUnit.Case
 
   defp content, do: "www.google.com"
@@ -8,7 +8,7 @@ defmodule EQRCode.PNGTest do
   setup do
     html_path() |> File.mkdir_p!()
     image_path() |> File.mkdir_p!()
-    qr = content() |> EQRCode.encode()
+    qr = content() |> QRCodeEx.encode()
     [qr: qr]
   end
 
@@ -41,7 +41,7 @@ defmodule EQRCode.PNGTest do
   defp build_png(png_list, qr, label, opts) do
     png_path = image_path() |> Path.join(Macro.underscore(label) <> ".png")
 
-    EQRCode.png(qr, opts)
+    QRCodeEx.png(qr, opts)
     |> write_png_to_file(png_path)
 
     png_list ++ [{label, png_path}]
@@ -58,7 +58,7 @@ defmodule EQRCode.PNGTest do
     <html xmlns="http://www.w3.org/1999/xhtml">
         <body>
             <head>
-                <title>EQRCode PNG Image Tests</title>
+                <title>QRCodeEx PNG Image Tests</title>
                 <style>
                     body { background: rgba(0,255,0); }
                 </style>

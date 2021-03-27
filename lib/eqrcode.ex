@@ -1,4 +1,4 @@
-defmodule EQRCode do
+defmodule QRCodeEx do
   @moduledoc """
   Simple QR Code Generator written in Elixir with no other dependencies.
 
@@ -8,12 +8,12 @@ defmodule EQRCode do
   qr_code_content = "your_qr_code_content"
 
   qr_code_content
-  |> EQRCode.encode()
-  |> EQRCode.svg()
+  |> QRCodeEx.encode()
+  |> QRCodeEx.svg()
   ```
   """
 
-  alias EQRCode.{Encode, ReedSolomon, Matrix}
+  alias QRCodeEx.{Encode, ReedSolomon, Matrix}
 
   @type error_correction_level :: :l | :m | :q | :h
 
@@ -75,8 +75,8 @@ defmodule EQRCode do
   @doc """
   ```elixir
   qr_code_content
-  |> EQRCode.encode()
-  |> EQRCode.svg(color: "#cc6600", shape: "circle", width: 300)
+  |> QRCodeEx.encode()
+  |> QRCodeEx.svg(color: "#cc6600", shape: "circle", width: 300)
   ```
 
   You can specify the following attributes of the QR code:
@@ -89,13 +89,13 @@ defmodule EQRCode do
 
   Default options are `[color: "#000", shape: "square", background_color: "#FFF"]`.
   """
-  defdelegate svg(matrix, options \\ []), to: EQRCode.SVG
+  defdelegate svg(matrix, options \\ []), to: QRCodeEx.SVG
 
   @doc """
   ```elixir
   qr_code_content
-  |> EQRCode.encode()
-  |> EQRCode.png(color: <<255, 0, 255>>, width: 200)
+  |> QRCodeEx.encode()
+  |> QRCodeEx.png(color: <<255, 0, 255>>, width: 200)
   ```
 
   You can specify the following attributes of the QR code:
@@ -106,14 +106,14 @@ defmodule EQRCode do
 
   By default, QR code size will be dynamically generated based on the input string.
   """
-  defdelegate png(matrix, options \\ []), to: EQRCode.PNG
+  defdelegate png(matrix, options \\ []), to: QRCodeEx.PNG
 
   @doc """
   ```elixir
   qr_code_content
-  |> EQRCode.encode()
-  |> EQRCode.render()
+  |> QRCodeEx.encode()
+  |> QRCodeEx.render()
   ```
   """
-  defdelegate render(matrix), to: EQRCode.Render
+  defdelegate render(matrix), to: QRCodeEx.Render
 end

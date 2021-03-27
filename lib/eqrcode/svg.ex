@@ -1,11 +1,11 @@
-defmodule EQRCode.SVG do
+defmodule QRCodeEx.SVG do
   @moduledoc """
   Render the QR Code matrix in SVG format
 
   ```elixir
   qr_code_content
-  |> EQRCode.encode()
-  |> EQRCode.svg(color: "#cc6600", shape: "circle", width: 300)
+  |> QRCodeEx.encode()
+  |> QRCodeEx.svg(color: "#cc6600", shape: "circle", width: 300)
   ```
 
   You can specify the following attributes of the QR code:
@@ -20,7 +20,7 @@ defmodule EQRCode.SVG do
 
   """
 
-  alias EQRCode.Matrix
+  alias QRCodeEx.Matrix
 
   @doc """
   Return the SVG format of the QR Code
@@ -105,7 +105,7 @@ defmodule EQRCode.SVG do
     |> draw_rect
   end
 
-  # This pattern match ensures that the QR Codes positional markers are drawn 
+  # This pattern match ensures that the QR Codes positional markers are drawn
   # as rectangles, regardless of the shape
   defp substitute(1, row_num, col_num, %{color: color, module_size: module_size, size: size})
        when (row_num <= 8 and col_num <= 8) or

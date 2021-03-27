@@ -1,7 +1,7 @@
-defmodule EQRCode.Matrix do
+defmodule QRCodeEx.Matrix do
   @moduledoc false
 
-  alias EQRCode.SpecTable
+  alias QRCodeEx.SpecTable
 
   import Bitwise
 
@@ -228,16 +228,16 @@ defmodule EQRCode.Matrix do
       |> Stream.zip(Stream.cycle([:up, :down]))
       |> Stream.flat_map(fn {z, path} -> path(path, {modules - 1, z}) end)
       |> Stream.filter(&available?(matrix, &1))
-      |> Stream.zip(EQRCode.Encode.bits(data))
+      |> Stream.zip(QRCodeEx.Encode.bits(data))
 
     {mask, _, matrix} =
       Stream.map(0b000..0b111, fn mask ->
         matrix =
           Enum.reduce(candidate, matrix, fn {coordinate, v}, acc ->
-            update(acc, coordinate, v ^^^ EQRCode.Mask.mask(mask, coordinate))
+            update(acc, coordinate, v ^^^ QRCodeEx.Mask.mask(mask, coordinate))
           end)
 
-        {mask, EQRCode.Mask.score(matrix), matrix}
+        {mask, QRCodeEx.Mask.score(matrix), matrix}
       end)
       |> Enum.min_by(&elem(&1, 1))
 
@@ -258,9 +258,9 @@ defmodule EQRCode.Matrix do
       |> Stream.zip(Stream.cycle([:up, :down]))
       |> Stream.flat_map(fn {z, path} -> path(path, {modules - 1, z}) end)
       |> Stream.filter(&available?(matrix, &1))
-      |> Stream.zip(EQRCode.Encode.bits(data))
+      |> Stream.zip(QRCodeEx.Encode.bits(data))
       |> Enum.reduce(matrix, fn {coordinate, v}, acc ->
-        update(acc, coordinate, v ^^^ EQRCode.Mask.mask(0, coordinate))
+        update(acc, coordinate, v ^^^ QRCodeEx.Mask.mask(0, coordinate))
       end)
 
     %{m | matrix: matrix, mask: 0}
@@ -288,7 +288,7 @@ defmodule EQRCode.Matrix do
   @spec draw_format_areas(t) :: t
   def draw_format_areas(%__MODULE__{matrix: matrix, modules: modules, mask: mask, error_correction_level: ecl} = m) do
     ecc_l = SpecTable.error_corretion_bits(ecl)
-    data = EQRCode.ReedSolomon.bch_encode(<<ecc_l::2, mask::3>>)
+    data = QRCodeEx.ReedSolomon.bch_encode(<<ecc_l::2, mask::3>>)
 
     matrix =
       [
@@ -315,7 +315,7 @@ defmodule EQRCode.Matrix do
 
   def draw_version_areas(%__MODULE__{matrix: matrix, modules: modules, version: version} = m) do
     version_information_bits = SpecTable.version_information_bits(version)
-    data = EQRCode.Encode.bits(<<version_information_bits::18>>)
+    data = QRCodeEx.Encode.bits(<<version_information_bits::18>>)
     z = modules - 9
 
     matrix =
@@ -380,7 +380,7 @@ defmodule EQRCode.Matrix do
   returns the coordinates of the shape.
 
   Example:
-      iex> EQRCode.Matrix.shape({0, 0}, {3, 3})
+      iex> QRCodeEx.Matrix.shape({0, 0}, {3, 3})
       [{0, 0}, {0, 1}, {0, 2},
        {1, 0}, {1, 1}, {1, 2},
        {2, 0}, {2, 1}, {2, 2}]

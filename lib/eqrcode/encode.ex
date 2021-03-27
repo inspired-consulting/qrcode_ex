@@ -1,9 +1,9 @@
-defmodule EQRCode.Encode do
+defmodule QRCodeEx.Encode do
   @moduledoc """
   Data encoding in Byte Mode.
   """
 
-  alias EQRCode.SpecTable
+  alias QRCodeEx.SpecTable
   import Bitwise
 
   @error_correction_level SpecTable.error_correction_level()
@@ -15,7 +15,7 @@ defmodule EQRCode.Encode do
   Encode the binary.
 
   Example:
-      iex> EQRCode.Encode.encode("hello world!", :l)
+      iex> QRCodeEx.Encode.encode("hello world!", :l)
       {1, :l, [0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1,
        0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1,
        0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
@@ -67,7 +67,7 @@ defmodule EQRCode.Encode do
   Returns the lowest version for the given binary.
 
   Example:
-      iex> EQRCode.Encode.version("hello world!", :l)
+      iex> QRCodeEx.Encode.version("hello world!", :l)
       {:ok, 1}
   """
   @spec version(binary, SpecTable.error_correction_level()) :: {:error, :no_version_found} | {:ok, SpecTable.version()}
@@ -80,7 +80,7 @@ defmodule EQRCode.Encode do
   Returns bits for any binary data.
 
   Example:
-      iex> EQRCode.Encode.bits(<<123, 4>>)
+      iex> QRCodeEx.Encode.bits(<<123, 4>>)
       [0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0]
   """
   @spec bits(bitstring) :: [0 | 1]

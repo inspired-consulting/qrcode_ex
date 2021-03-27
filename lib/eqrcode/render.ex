@@ -1,4 +1,4 @@
-defmodule EQRCode.Render do
+defmodule QRCodeEx.Render do
   @moduledoc """
   Render the QR Code matrix.
 
@@ -8,8 +8,8 @@ defmodule EQRCode.Render do
   @doc """
   Render the QR Code to terminal.
   """
-  @spec render(EQRCode.Matrix.t()) :: :ok
-  def render(%EQRCode.Matrix{matrix: matrix}) do
+  @spec render(QRCodeEx.Matrix.t()) :: :ok
+  def render(%QRCodeEx.Matrix{matrix: matrix}) do
     Tuple.to_list(matrix)
     |> Stream.map(fn e ->
       Tuple.to_list(e)
@@ -28,8 +28,8 @@ defmodule EQRCode.Render do
   @doc """
   Rotate the QR Code 90 degree clockwise and render to terminal.
   """
-  @spec render2(EQRCode.Matrix.t()) :: :ok
-  def render2(%EQRCode.Matrix{matrix: matrix}) do
+  @spec render2(QRCodeEx.Matrix.t()) :: :ok
+  def render2(%QRCodeEx.Matrix{matrix: matrix}) do
     for(e <- Tuple.to_list(matrix), do: Tuple.to_list(e))
     |> Enum.reverse()
     |> transform()
