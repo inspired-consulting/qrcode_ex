@@ -8,7 +8,7 @@ defmodule QRCodeEx.MixProject do
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       name: "QRCodeEx",
-      description: "Simple QRCode Generator in Elixir",
+      description: "Simple QRCode Generator in Elixir (revamped eqrcode)",
       source_url: "https://github.com/inspired-consulting/qrcode_ex",
       package: package(),
       deps: deps(),
