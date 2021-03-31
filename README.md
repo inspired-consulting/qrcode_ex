@@ -2,7 +2,7 @@
 
 Simple QR Code Generator written in Elixir with no other dependencies.
 
-This project is a fork an a successor of [SiliconJungles/eqrcode](https://github.com/SiliconJungles/eqrcode). It adds the following functionallity:
+This project is a fork and a successor of [SiliconJungles/eqrcode](https://github.com/SiliconJungles/eqrcode). It adds the following functionallity:
 * more error coreection levels: :m, :q, :h (before was only :l)
 * more QR code versions: 8..40  (before was only 1-7)
 
