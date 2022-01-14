@@ -24,7 +24,7 @@ defmodule QRCodeEx.ReedSolomon do
     rest =
       Stream.zip(rest, tl(e))
       |> Enum.map(fn {x, y} ->
-        (QRCodeEx.GaloisField.to_i(x) ^^^ QRCodeEx.GaloisField.to_i(y))
+        bxor(QRCodeEx.GaloisField.to_i(x), QRCodeEx.GaloisField.to_i(y))
         |> QRCodeEx.GaloisField.to_a()
       end)
 
@@ -120,7 +120,9 @@ defmodule QRCodeEx.ReedSolomon do
   def interleave_sec([], acc), do: acc
 
   def interleave_sec(data, acc) do
-    for [h | tail] <- data do {h, tail} end
+    for [h | tail] <- data do
+      {h, tail}
+    end
     |> Enum.unzip()
     |> case do
       {l, rest} -> interleave_sec(rest, Enum.concat(Enum.reverse(l), acc))
@@ -147,20 +149,9 @@ defmodule QRCodeEx.ReedSolomon do
     Enum.map(gen_poly, &rem(&1 + QRCodeEx.GaloisField.to_a(h), 255))
     |> Enum.map(&QRCodeEx.GaloisField.to_i/1)
     |> pad_zip(msg)
-    |> Enum.map(fn {a, b} -> a ^^^ b end)
+    |> Enum.map(fn {a, b} -> bxor(a, b) end)
     |> tl()
   end
-
-  # def my_len(v) when is_tuple(v), do: v |> Tuple.to_list() |> Enum.map(&my_len/1)
-  # def my_len(v = [p|_]) when is_list(p), do: v |> Enum.map(&my_len/1)
-  # def my_len(v = [p|_]) when is_tuple(p), do: v |> Enum.map(&my_len/1)
-  # def my_len(v), do: length(v)
-
-  # def len_inspect(v) do
-  #   my_len(v) |> IO.inspect(label: "#{__ENV__.file}:#{__ENV__.line}")
-  #   v
-  #   |> IO.inspect(label: "#{__ENV__.file}:#{__ENV__.line}")
-  # end
 
   defp pad_zip(left, right) do
     [short, long] = Enum.sort_by([left, right], &length/1)
@@ -174,7 +165,7 @@ defmodule QRCodeEx.ReedSolomon do
 
     (QRCodeEx.Encode.bits(data) ++ bch)
     |> Stream.zip(QRCodeEx.Encode.bits(<<@format_mask::15>>))
-    |> Enum.map(fn {a, b} -> a ^^^ b end)
+    |> Enum.map(fn {a, b} -> bxor(a, b) end)
   end
 
   defp do_bch_encode(list) when length(list) == 10, do: list
@@ -184,7 +175,7 @@ defmodule QRCodeEx.ReedSolomon do
     QRCodeEx.Encode.bits(<<@format_generator_polynomial::11>>)
     |> Stream.concat(Stream.cycle([0]))
     |> Stream.zip(list)
-    |> Enum.map(fn {a, b} -> a ^^^ b end)
+    |> Enum.map(fn {a, b} -> bxor(a, b) end)
     |> do_bch_encode()
   end
 end

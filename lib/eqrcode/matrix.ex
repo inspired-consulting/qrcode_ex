@@ -234,7 +234,7 @@ defmodule QRCodeEx.Matrix do
       Stream.map(0b000..0b111, fn mask ->
         matrix =
           Enum.reduce(candidate, matrix, fn {coordinate, v}, acc ->
-            update(acc, coordinate, v ^^^ QRCodeEx.Mask.mask(mask, coordinate))
+            update(acc, coordinate, bxor(v, QRCodeEx.Mask.mask(mask, coordinate)))
           end)
 
         {mask, QRCodeEx.Mask.score(matrix), matrix}
@@ -260,7 +260,7 @@ defmodule QRCodeEx.Matrix do
       |> Stream.filter(&available?(matrix, &1))
       |> Stream.zip(QRCodeEx.Encode.bits(data))
       |> Enum.reduce(matrix, fn {coordinate, v}, acc ->
-        update(acc, coordinate, v ^^^ QRCodeEx.Mask.mask(0, coordinate))
+        update(acc, coordinate, bxor(v, QRCodeEx.Mask.mask(0, coordinate)))
       end)
 
     %{m | matrix: matrix, mask: 0}

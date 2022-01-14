@@ -38,8 +38,7 @@ defmodule QRCodeEx.Mask do
   def rule2(matrix) do
     z = tuple_size(matrix) - 2
 
-    for i <- 0..z,
-        j <- 0..z do
+    for i <- 0..z, j <- 0..z do
       QRCodeEx.Matrix.shape({i, j}, {2, 2})
       |> Enum.map(&get(matrix, &1))
     end
@@ -57,10 +56,9 @@ defmodule QRCodeEx.Mask do
   def rule3(matrix) do
     z = tuple_size(matrix)
 
-    for i <- 0..(z - 1),
-        j <- 0..(z - 11) do
+    for i <- 0..(z - 1), j <- 0..(z - 11) do
       [{{i, j}, {11, 1}}, {{j, i}, {1, 11}}]
-      |> Stream.map(fn {a, b} ->
+      |> Enum.map(fn {a, b} ->
         QRCodeEx.Matrix.shape(a, b)
         |> Enum.map(&get(matrix, &1))
       end)
